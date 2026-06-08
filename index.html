@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Dr. Khan Rota">
+<title>Dr. Khan – Rota 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lasalle: #2563eb;
+    --paris:   #db2777;
+    --azilda:  #ea580c;
+    --downtown:#059669;
+    --ivan-bg: #dbeafe; --ivan-bd: #3b82f6; --ivan-tx: #1e40af;
+    --kaps-bg: #dcfce7; --kaps-bd: #22c55e; --kaps-tx: #166534;
+    --mehak-bg:#fef9c3; --mehak-bd:#eab308; --mehak-tx:#854d0e;
+    --angie-bg:#fce7f3; --angie-bd:#ec4899; --angie-tx:#9d174d;
+    --ali-bg:  #ede9fe; --ali-bd:  #8b5cf6; --ali-tx:  #5b21b6;
+    --nick-bg: #ffedd5; --nick-bd: #f97316; --nick-tx: #9a3412;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f0f4f8;
+    min-height: 100vh;
+    max-width: 520px;
+    margin: 0 auto;
+    padding-bottom: 80px;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: linear-gradient(155deg, #0f172a 0%, #1a3055 60%, #0e3460 100%);
+    padding: 48px 20px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content:''; position:absolute; top:-60px; right:-60px;
+    width:220px; height:220px; border-radius:50%;
+    background:rgba(59,130,246,0.1);
+  }
+  .header::after {
+    content:''; position:absolute; bottom:-40px; left:-40px;
+    width:160px; height:160px; border-radius:50%;
+    background:rgba(219,39,119,0.08);
+  }
+  .header-top { display:flex; align-items:center; gap:14px; margin-bottom:22px; position:relative; z-index:1; }
+  .avatar {
+    width:54px; height:54px; border-radius:16px; flex-shrink:0;
+    background:linear-gradient(135deg,#3b82f6,#1d4ed8);
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px; font-weight:900; color:#fff;
+    box-shadow:0 6px 18px rgba(37,99,235,0.5);
+    font-family:'DM Serif Display',serif; letter-spacing:1px;
+  }
+  .header-name { font-family:'DM Serif Display',serif; font-size:22px; color:#fff; letter-spacing:-0.3px; }
+  .header-sub  { font-size:12px; color:#64748b; margin-top:2px; }
+  .add-btn {
+    margin-left:auto; background:linear-gradient(135deg,#3b82f6,#2563eb);
+    border:none; border-radius:12px; padding:10px 18px;
+    color:#fff; font-weight:700; font-size:14px; cursor:pointer;
+    box-shadow:0 4px 14px rgba(59,130,246,0.45); flex-shrink:0;
+    font-family:'DM Sans',sans-serif;
+  }
+  .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; position:relative; z-index:1; }
+  .stat-box {
+    background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.08);
+    border-radius:14px; padding:12px 4px; text-align:center;
+  }
+  .stat-val { font-size:20px; font-weight:900; color:#fff; font-family:'DM Serif Display',serif; }
+  .stat-lbl { font-size:10px; color:#64748b; text-transform:uppercase; letter-spacing:0.8px; margin-top:2px; }
+
+  /* ── Tabs ── */
+  .tab-bar { display:flex; margin:16px 16px 0; background:#e2e8f0; border-radius:14px; padding:3px; }
+  .tab-btn {
+    flex:1; padding:10px 0; border-radius:11px; border:none;
+    background:transparent; color:#64748b; font-weight:700;
+    font-size:13px; cursor:pointer; transition:all 0.15s;
+    font-family:'DM Sans',sans-serif;
+  }
+  .tab-btn.active { background:#fff; color:#0f172a; box-shadow:0 1px 6px rgba(0,0,0,0.1); }
+
+  /* ── Content ── */
+  .content { padding:16px; }
+
+  /* ── Calendar ── */
+  .cal-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .cal-nav button { background:none; border:none; font-size:22px; cursor:pointer; color:#475569; padding:4px 10px; }
+  .cal-month { font-family:'DM Serif Display',serif; font-size:18px; color:#1e293b; }
+  .loc-legend { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+  .loc-dot { display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:4px; vertical-align:middle; }
+  .loc-label { font-size:11px; color:#475569; font-weight:600; }
+  .cal-box { background:#fff; border-radius:18px; padding:16px; box-shadow:0 2px 12px rgba(0,0,0,0.07); }
+  .day-labels { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; margin-bottom:6px; }
+  .day-label { text-align:center; font-size:10px; font-weight:700; color:#94a3b8; padding:4px 0; }
+  .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:5px; }
+  .cal-cell {
+    aspect-ratio:1/1; border-radius:12px; border:2px solid transparent;
+    display:flex; flex-direction:column; align-items:center;
+    justify-content:center; cursor:default; transition:transform 0.12s;
+    padding:2px;
+  }
+  .cal-cell.has-shift { cursor:pointer; }
+  .cal-cell.has-shift:active { transform:scale(0.93); }
+  .cal-day-num { font-size:13px; font-weight:700; color:#94a3b8; }
+  .cal-cell.has-shift .cal-day-num { font-weight:900; }
+  .cal-pip { width:6px; height:6px; border-radius:50%; margin-top:2px; }
+  .cal-pa-tag { font-size:8px; font-weight:700; margin-top:1px; }
+
+  /* ── Month summary ── */
+  .summary-box { background:#fff; border-radius:16px; padding:16px; margin-top:14px; box-shadow:0 2px 10px rgba(0,0,0,0.06); }
+  .summary-title { font-size:11px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:12px; }
+  .summary-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .summary-stat { text-align:center; background:#f8fafc; border-radius:12px; padding:12px 0; }
+  .summary-stat .val { font-size:22px; font-weight:900; color:#1e293b; font-family:'DM Serif Display',serif; }
+  .summary-stat .lbl { font-size:10px; color:#94a3b8; text-transform:uppercase; letter-spacing:0.8px; margin-top:2px; }
+
+  /* ── PA Filter pills ── */
+  .pa-filters { display:flex; gap:7px; overflow-x:auto; padding-bottom:6px; margin-bottom:14px; scrollbar-width:none; }
+  .pa-filters::-webkit-scrollbar { display:none; }
+  .pa-pill {
+    flex-shrink:0; padding:7px 15px; border-radius:99px;
+    border:1.5px solid #e2e8f0; background:#fff;
+    color:#64748b; font-weight:700; font-size:12px; cursor:pointer;
+    font-family:'DM Sans',sans-serif; transition:all 0.15s;
+  }
+  .pa-pill.active { border-color:transparent; }
+
+  /* ── Shift Cards ── */
+  .shift-card {
+    background:#fff; border-radius:16px;
+    border:1px solid #e8edf2;
+    padding:16px; margin-bottom:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+    animation:fadeUp 0.3s ease both;
+    border-left:5px solid #e2e8f0;
+    position:relative; overflow:hidden;
+  }
+  .shift-card::before {
+    content:''; position:absolute;
+    top:0; right:0; width:80px; height:80px;
+    border-radius:50%; opacity:0.06;
+    transform:translate(20px,-20px);
+  }
+  .card-top { display:flex; justify-content:space-between; align-items:flex-start; }
+  .card-date { font-family:'DM Serif Display',serif; font-size:17px; color:#0f172a; }
+  .card-loc  { display:flex; align-items:center; margin-top:4px; }
+  .card-loc-dot { width:9px; height:9px; border-radius:3px; margin-right:5px; flex-shrink:0; }
+  .card-loc-name { font-size:12px; font-weight:700; }
+  .card-actions { display:flex; gap:6px; }
+  .btn-edit { background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; border-radius:8px; padding:5px 11px; font-size:11px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
+  .btn-del  { background:#fff1f2; color:#e11d48; border:1px solid #fecdd3; border-radius:8px; padding:5px 10px; font-size:11px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; }
+  .card-info { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+  .info-box { background:#f8fafc; border-radius:12px; padding:10px 14px; flex:1; min-width:120px; }
+  .info-lbl { font-size:10px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; }
+  .info-val { font-size:14px; font-weight:800; color:#1e293b; }
+  .info-sub { font-size:10px; color:#64748b; margin-top:2px; }
+  .pa-badge {
+    display:inline-block; padding:3px 10px; border-radius:99px;
+    font-size:11px; font-weight:700; letter-spacing:0.3px;
+    border:1.5px solid;
+  }
+  .no-pa { font-size:11px; color:#94a3b8; font-style:italic; }
+
+  /* ── Bottom Sheet ── */
+  .overlay { position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:800; animation:fadeIn 0.2s ease; }
+  .bottom-sheet {
+    position:fixed; bottom:0; left:50%; transform:translateX(-50%);
+    width:100%; max-width:520px;
+    background:#fff; border-radius:24px 24px 0 0;
+    box-shadow:0 -10px 40px rgba(0,0,0,0.2);
+    padding:20px 20px 36px; z-index:900;
+    animation:slideUp 0.28s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .sheet-handle { width:44px; height:4px; background:#e2e8f0; border-radius:2px; margin:0 auto 18px; }
+  .sheet-date { font-family:'DM Serif Display',serif; font-size:20px; color:#0f172a; }
+  .sheet-loc  { display:flex; align-items:center; margin-top:5px; }
+  .sheet-info-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:18px; }
+  .sheet-info { background:#f8fafc; border-radius:14px; padding:14px; }
+  .sheet-actions { display:flex; gap:10px; margin-top:18px; }
+  .sheet-btn { flex:1; padding:13px 0; border-radius:14px; font-weight:700; font-size:14px; cursor:pointer; font-family:'DM Sans',sans-serif; border:none; }
+
+  /* ── Modal ── */
+  .modal-overlay { position:fixed; inset:0; background:rgba(15,23,42,0.65); backdrop-filter:blur(6px); z-index:1000; display:flex; align-items:center; justify-content:center; padding:16px; animation:fadeIn 0.2s ease; }
+  .modal {
+    background:#fff; border-radius:22px; padding:28px 22px;
+    width:100%; max-width:420px;
+    box-shadow:0 24px 64px rgba(0,0,0,0.28);
+    animation:slideUp 0.25s ease;
+    max-height:90vh; overflow-y:auto;
+  }
+  .modal-title { font-family:'DM Serif Display',serif; font-size:20px; color:#0f172a; margin-bottom:22px; }
+  .form-group { margin-bottom:16px; }
+  .form-label { display:block; font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px; }
+  .form-input, .form-select {
+    width:100%; padding:11px 14px; border-radius:12px;
+    border:1.5px solid #e2e8f0; font-size:14px; color:#0f172a;
+    background:#f8fafc; font-family:'DM Sans',sans-serif;
+    outline:none; transition:border-color 0.15s;
+  }
+  .form-input:focus, .form-select:focus { border-color:#3b82f6; background:#fff; }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .pa-section { border-top:1.5px solid #f1f5f9; padding-top:16px; margin-top:4px; }
+  .pa-section-title { font-size:11px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:14px; }
+  .modal-actions { display:flex; gap:10px; margin-top:22px; }
+  .modal-cancel { flex:1; padding:13px 0; border-radius:14px; border:1.5px solid #e2e8f0; background:#f8fafc; color:#475569; font-weight:700; font-size:14px; cursor:pointer; font-family:'DM Sans',sans-serif; }
+  .modal-save { flex:2; padding:13px 0; border-radius:14px; border:none; background:linear-gradient(135deg,#2563eb,#1d4ed8); color:#fff; font-weight:700; font-size:14px; cursor:pointer; font-family:'DM Sans',sans-serif; box-shadow:0 4px 14px rgba(37,99,235,0.4); }
+
+  /* ── Timeline bar row (list view header) ── */
+  .tl-hint { font-size:11px; color:#94a3b8; text-align:center; margin-bottom:14px; }
+
+  @keyframes fadeUp   { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes slideUp  { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn   { from{opacity:0} to{opacity:1} }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-top">
+    <div class="avatar">KM</div>
+    <div>
+      <div class="header-name">Dr. Khan, M</div>
+      <div class="header-sub">Northwood Medical · June 2026</div>
+    </div>
+    <button class="add-btn" onclick="openAdd()">+ Add Shift</button>
+  </div>
+  <div class="stats-grid" id="statsGrid"></div>
+</div>
+
+<!-- Tabs -->
+<div class="tab-bar">
+  <button class="tab-btn active" id="tabCal" onclick="switchTab('calendar')">📅  Calendar</button>
+  <button class="tab-btn"        id="tabList" onclick="switchTab('list')">📋  List</button>
+</div>
+
+<!-- Content -->
+<div class="content" id="mainContent"></div>
+
+<!-- Bottom Sheet -->
+<div class="overlay" id="overlay" style="display:none" onclick="closeSheet()"></div>
+<div class="bottom-sheet" id="bottomSheet" style="display:none">
+  <div class="sheet-handle"></div>
+  <div id="sheetContent"></div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" style="display:none" onclick="e=>e.stopPropagation()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-title" id="modalTitle">Add Shift</div>
+    <div class="form-group">
+      <label class="form-label">Date</label>
+      <input type="date" class="form-input" id="fDate">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Start</label>
+        <input type="time" class="form-input" id="fStart">
+      </div>
+      <div class="form-group">
+        <label class="form-label">End</label>
+        <input type="time" class="form-input" id="fEnd">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Location</label>
+      <select class="form-select" id="fLoc">
+        <option>Lasalle</option><option>Paris</option><option>Azilda</option><option>Downtown</option>
+      </select>
+    </div>
+    <div class="pa-section">
+      <div class="pa-section-title">PA Details (optional)</div>
+      <div class="form-group">
+        <label class="form-label">PA Name</label>
+        <select class="form-select" id="fPA" onchange="togglePATimes()">
+          <option value="">No PA</option>
+          <option>IVAN</option><option>KAPS</option><option>MEHAK</option>
+          <option>ANGIE</option><option>Ali</option><option>Nick</option>
+        </select>
+      </div>
+      <div id="paTimes" style="display:none">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">PA Start</label>
+            <input type="time" class="form-input" id="fPAStart">
+          </div>
+          <div class="form-group">
+            <label class="form-label">PA End</label>
+            <input type="time" class="form-input" id="fPAEnd">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-save" onclick="saveShift()">Save Shift</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────────────────
+const SEED = [
+  {id:"s1",  date:"2026-06-03",location:"Lasalle",start:"08:00",end:"17:00",pa:"IVAN", paStart:"08:00",paEnd:"14:00"},
+  {id:"s2",  date:"2026-06-04",location:"Lasalle",start:"12:00",end:"21:00",pa:"KAPS", paStart:"12:00",paEnd:"21:00"},
+  {id:"s3",  date:"2026-06-05",location:"Lasalle",start:"08:00",end:"21:00",pa:"IVAN", paStart:"12:00",paEnd:"21:00"},
+  {id:"s4",  date:"2026-06-06",location:"Paris",  start:"09:00",end:"16:00",pa:"IVAN", paStart:"09:00",paEnd:"16:00"},
+  {id:"s5",  date:"2026-06-07",location:"Paris",  start:"09:00",end:"16:00",pa:"IVAN", paStart:"09:00",paEnd:"16:00"},
+  {id:"s6",  date:"2026-06-08",location:"Lasalle",start:"08:00",end:"17:00",pa:"KAPS", paStart:"08:00",paEnd:"17:00"},
+  {id:"s7",  date:"2026-06-10",location:"Lasalle",start:"08:00",end:"14:00",pa:"IVAN", paStart:"08:00",paEnd:"14:00"},
+  {id:"s8",  date:"2026-06-11",location:"Paris",  start:"14:00",end:"21:00",pa:"",     paStart:"",     paEnd:""},
+  {id:"s9",  date:"2026-06-12",location:"Paris",  start:"14:00",end:"21:00",pa:"IVAN", paStart:"14:00",paEnd:"21:00"},
+  {id:"s10", date:"2026-06-13",location:"Azilda", start:"09:00",end:"13:00",pa:"",     paStart:"",     paEnd:""},
+  {id:"s11", date:"2026-06-15",location:"Lasalle",start:"08:00",end:"21:00",pa:"KAPS", paStart:"08:00",paEnd:"19:00"},
+  {id:"s12", date:"2026-06-16",location:"Paris",  start:"08:00",end:"14:00",pa:"MEHAK",paStart:"08:00",paEnd:"14:00"},
+  {id:"s13", date:"2026-06-17",location:"Lasalle",start:"14:00",end:"21:00",pa:"KAPS", paStart:"14:00",paEnd:"21:00"},
+  {id:"s14", date:"2026-06-18",location:"Lasalle",start:"14:00",end:"21:00",pa:"KAPS", paStart:"14:00",paEnd:"21:00"},
+  {id:"s15", date:"2026-06-19",location:"Lasalle",start:"08:00",end:"21:00",pa:"KAPS", paStart:"08:00",paEnd:"19:00"},
+  {id:"s16", date:"2026-06-20",location:"Lasalle",start:"09:00",end:"16:00",pa:"KAPS", paStart:"09:00",paEnd:"16:00"},
+  {id:"s17", date:"2026-06-21",location:"Lasalle",start:"09:00",end:"16:00",pa:"IVAN", paStart:"09:00",paEnd:"16:00"},
+  {id:"s18", date:"2026-06-22",location:"Lasalle",start:"08:00",end:"17:00",pa:"KAPS", paStart:"08:00",paEnd:"17:00"},
+  {id:"s19", date:"2026-06-23",location:"Lasalle",start:"16:00",end:"21:00",pa:"",     paStart:"",     paEnd:""},
+  {id:"s20", date:"2026-06-24",location:"Lasalle",start:"08:00",end:"16:00",pa:"IVAN", paStart:"08:00",paEnd:"14:00"},
+  {id:"s21", date:"2026-06-25",location:"Lasalle",start:"14:00",end:"21:00",pa:"MEHAK",paStart:"14:00",paEnd:"20:00"},
+  {id:"s22", date:"2026-06-26",location:"Lasalle",start:"08:00",end:"21:00",pa:"KAPS", paStart:"08:00",paEnd:"18:00"},
+  {id:"s23", date:"2026-06-27",location:"Lasalle",start:"09:00",end:"16:00",pa:"IVAN", paStart:"09:00",paEnd:"16:00"},
+  {id:"s24", date:"2026-06-28",location:"Paris",  start:"09:00",end:"16:00",pa:"MEHAK",paStart:"09:00",paEnd:"16:00"},
+  {id:"s25", date:"2026-06-29",location:"Lasalle",start:"08:00",end:"21:00",pa:"KAPS", paStart:"08:00",paEnd:"18:00"},
+  {id:"s26", date:"2026-06-30",location:"Lasalle",start:"08:00",end:"14:00",pa:"MEHAK",paStart:"08:00",paEnd:"14:00"},
+];
+
+const LOC_COLOR = {Lasalle:"#2563eb",Paris:"#db2777",Azilda:"#ea580c",Downtown:"#059669"};
+const PA_STYLE  = {
+  IVAN: {bg:"#dbeafe",bd:"#3b82f6",tx:"#1e40af"},
+  KAPS: {bg:"#dcfce7",bd:"#22c55e",tx:"#166534"},
+  MEHAK:{bg:"#fef9c3",bd:"#eab308",tx:"#854d0e"},
+  ANGIE:{bg:"#fce7f3",bd:"#ec4899",tx:"#9d174d"},
+  Ali:  {bg:"#ede9fe",bd:"#8b5cf6",tx:"#5b21b6"},
+  Nick: {bg:"#ffedd5",bd:"#f97316",tx:"#9a3412"},
+};
+const DAYS   = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let shifts = [], view = "calendar", curMonth = 5, curYear = 2026;
+let filterPA = "All", editId = null, selectedShift = null;
+
+function uid(){ return "s"+Date.now()+Math.random().toString(36).slice(2,6); }
+function toMin(t){ if(!t)return 0; const[h,m]=t.split(":").map(Number); return h*60+m; }
+function shiftHrs(s){ return ((toMin(s.end)-toMin(s.start))/60).toFixed(1); }
+function fmtDate(d){
+  const dt=new Date(d+"T00:00:00");
+  return dt.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"});
+}
+function totalHrs(arr){ return arr.reduce((a,s)=>a+(toMin(s.end)-toMin(s.start))/60,0); }
+
+// ── Storage ───────────────────────────────────────────────────────────────────
+function save(){ try{localStorage.setItem("drKhanShifts",JSON.stringify(shifts));}catch(e){} }
+function load(){
+  try{
+    const d=localStorage.getItem("drKhanShifts");
+    if(d){ shifts=JSON.parse(d); return; }
+  }catch(e){}
+  shifts=JSON.parse(JSON.stringify(SEED));
+}
+
+// ── PA Badge HTML ─────────────────────────────────────────────────────────────
+function paBadge(pa){
+  if(!pa) return '<span class="no-pa">No PA assigned</span>';
+  const s=PA_STYLE[pa]||{bg:"#f1f5f9",bd:"#cbd5e1",tx:"#475569"};
+  return `<span class="pa-badge" style="background:${s.bg};border-color:${s.bd};color:${s.tx}">${pa}</span>`;
+}
+
+// ── Stats ─────────────────────────────────────────────────────────────────────
+function renderStats(){
+  const allPAs=[...new Set(shifts.map(s=>s.pa).filter(Boolean))];
+  document.getElementById("statsGrid").innerHTML=`
+    <div class="stat-box"><div class="stat-val">${shifts.length}</div><div class="stat-lbl">Shifts</div></div>
+    <div class="stat-box"><div class="stat-val">${totalHrs(shifts).toFixed(0)}h</div><div class="stat-lbl">Hours</div></div>
+    <div class="stat-box"><div class="stat-val">${allPAs.length}</div><div class="stat-lbl">PAs</div></div>
+    <div class="stat-box"><div class="stat-val">${shifts.filter(s=>!s.pa).length}</div><div class="stat-lbl">Solo</div></div>
+  `;
+}
+
+// ── Calendar ──────────────────────────────────────────────────────────────────
+function renderCalendar(){
+  const firstDay=new Date(curYear,curMonth,1).getDay();
+  const daysInMonth=new Date(curYear,curMonth+1,0).getDate();
+  const map={};
+  shifts.forEach(s=>{ map[s.date]=s; });
+
+  let cells="";
+  for(let i=0;i<firstDay;i++) cells+=`<div></div>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const ds=`${curYear}-${String(curMonth+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+    const sh=map[ds];
+    const col=sh?(LOC_COLOR[sh.location]||"#6b7280"):"";
+    const isToday=ds===new Date().toISOString().slice(0,10);
+    if(sh){
+      const ps=PA_STYLE[sh.pa]||null;
+      cells+=`<div class="cal-cell has-shift"
+        style="border-color:${col};background:${col}18"
+        onclick="openSheet('${sh.id}')">
+        <span class="cal-day-num" style="color:${col}">${d}</span>
+        <div class="cal-pip" style="background:${col}"></div>
+        ${sh.pa?`<div class="cal-pa-tag" style="color:${col}">${sh.pa}</div>`:""}
+      </div>`;
+    } else {
+      cells+=`<div class="cal-cell" style="${isToday?"border-color:#94a3b8;background:#f8fafc":""}">
+        <span class="cal-day-num" style="${isToday?"color:#0f172a":""}">${d}</span>
+      </div>`;
+    }
+  }
+
+  const monthShifts=shifts.filter(s=>{const[y,m]=s.date.split("-").map(Number);return y===curYear&&m===curMonth+1;});
+
+  const locLegend=Object.entries(LOC_COLOR).map(([loc,col])=>
+    `<span><span class="loc-dot" style="background:${col}"></span><span class="loc-label">${loc}</span></span>`
+  ).join("");
+
+  document.getElementById("mainContent").innerHTML=`
+    <div class="cal-nav">
+      <button onclick="changeMonth(-1)">‹</button>
+      <div class="cal-month">${MONTHS[curMonth]} ${curYear}</div>
+      <button onclick="changeMonth(1)">›</button>
+    </div>
+    <div class="loc-legend">${locLegend}</div>
+    <div class="cal-box">
+      <div class="day-labels">${DAYS.map(d=>`<div class="day-label">${d}</div>`).join("")}</div>
+      <div class="cal-grid">${cells}</div>
+    </div>
+    <div style="font-size:11px;color:#94a3b8;text-align:center;margin-top:10px">Tap a coloured date to see shift details</div>
+    <div class="summary-box">
+      <div class="summary-title">${MONTHS[curMonth]} Summary</div>
+      <div class="summary-stats">
+        <div class="summary-stat"><div class="val">${monthShifts.length}</div><div class="lbl">Shifts</div></div>
+        <div class="summary-stat"><div class="val">${totalHrs(monthShifts).toFixed(0)}h</div><div class="lbl">Hours</div></div>
+        <div class="summary-stat"><div class="val">${monthShifts.filter(s=>!s.pa).length}</div><div class="lbl">Solo</div></div>
+      </div>
+    </div>
+  `;
+}
+
+function changeMonth(dir){
+  curMonth+=dir;
+  if(curMonth<0){curMonth=11;curYear--;}
+  if(curMonth>11){curMonth=0;curYear++;}
+  renderCalendar();
+}
+
+// ── List View ─────────────────────────────────────────────────────────────────
+function renderList(){
+  const allPAs=[...new Set(shifts.map(s=>s.pa).filter(Boolean))];
+  const pills=["All","No PA",...allPAs].map(pa=>{
+    const s=PA_STYLE[pa]||null;
+    const active=filterPA===pa;
+    let style="";
+    if(active&&s) style=`background:${s.bg};border-color:${s.bd};color:${s.tx}`;
+    else if(active) style="background:#1e293b;color:#fff;border-color:#1e293b";
+    return `<button class="pa-pill${active?" active":""}" style="${style}" onclick="setFilter('${pa}')">${pa}</button>`;
+  }).join("");
+
+  const visible=shifts
+    .filter(s=>filterPA==="All"||(filterPA==="No PA"?!s.pa:s.pa===filterPA))
+    .sort((a,b)=>a.date.localeCompare(b.date));
+
+  const cards=visible.map((s,i)=>{
+    const col=LOC_COLOR[s.location]||"#6b7280";
+    const ps=PA_STYLE[s.pa]||null;
+    return `
+    <div class="shift-card" style="border-left-color:${col};animation-delay:${i*0.04}s">
+      <div style="position:absolute;top:0;right:0;width:90px;height:90px;border-radius:50%;
+        background:${col};opacity:0.06;transform:translate(25px,-25px)"></div>
+      <div class="card-top">
+        <div>
+          <div class="card-date">${fmtDate(s.date)}</div>
+          <div class="card-loc">
+            <div class="card-loc-dot" style="background:${col}"></div>
+            <span class="card-loc-name" style="color:${col}">${s.location}</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <button class="btn-edit" onclick="openEdit('${s.id}')">Edit</button>
+          <button class="btn-del"  onclick="deleteShift('${s.id}')">✕</button>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="info-box">
+          <div class="info-lbl">Your Shift</div>
+          <div class="info-val">${s.start} – ${s.end}</div>
+          <div class="info-sub">${shiftHrs(s)} hours</div>
+        </div>
+        <div class="info-box">
+          <div class="info-lbl">PA on Duty</div>
+          <div style="margin-top:4px">${paBadge(s.pa)}</div>
+          ${s.pa?`<div class="info-sub">${s.paStart} – ${s.paEnd}</div>`:""}
+        </div>
+      </div>
+    </div>`;
+  }).join("") || `<div style="text-align:center;color:#94a3b8;padding:48px 0;font-size:14px">No shifts found.</div>`;
+
+  document.getElementById("mainContent").innerHTML=`
+    <div class="pa-filters">${pills}</div>
+    ${cards}
+  `;
+}
+
+function setFilter(pa){ filterPA=pa; renderList(); }
+
+// ── Bottom Sheet ──────────────────────────────────────────────────────────────
+function openSheet(id){
+  const s=shifts.find(x=>x.id===id); if(!s) return;
+  selectedShift=s;
+  const col=LOC_COLOR[s.location]||"#6b7280";
+  document.getElementById("sheetContent").innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div class="sheet-date">${fmtDate(s.date)}</div>
+        <div class="sheet-loc">
+          <div class="card-loc-dot" style="background:${col}"></div>
+          <span style="font-size:13px;font-weight:700;color:${col}">${s.location}</span>
+        </div>
+      </div>
+      <button onclick="closeSheet()" style="background:#f1f5f9;border:none;border-radius:99px;
+        width:34px;height:34px;font-size:16px;cursor:pointer;color:#64748b">✕</button>
+    </div>
+    <div class="sheet-info-grid">
+      <div class="sheet-info">
+        <div class="info-lbl">Your Shift</div>
+        <div style="font-size:16px;font-weight:800;color:#1e293b;margin-top:4px">${s.start} – ${s.end}</div>
+        <div style="font-size:11px;color:#64748b;margin-top:4px">${shiftHrs(s)} hours</div>
+      </div>
+      <div class="sheet-info">
+        <div class="info-lbl">PA on Duty</div>
+        <div style="margin-top:6px">${paBadge(s.pa)}</div>
+        ${s.pa?`<div style="font-size:11px;color:#64748b;margin-top:6px">${s.paStart} – ${s.paEnd}</div>`:""}
+      </div>
+    </div>
+    <div class="sheet-actions">
+      <button class="sheet-btn" style="background:#eff6ff;color:#2563eb"
+        onclick="closeSheet();openEdit('${s.id}')">✏️  Edit</button>
+      <button class="sheet-btn" style="background:#fff1f2;color:#e11d48"
+        onclick="deleteShift('${s.id}')">🗑  Delete</button>
+    </div>
+  `;
+  document.getElementById("overlay").style.display="block";
+  document.getElementById("bottomSheet").style.display="block";
+}
+
+function closeSheet(){
+  document.getElementById("overlay").style.display="none";
+  document.getElementById("bottomSheet").style.display="none";
+  selectedShift=null;
+}
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+function openAdd(){
+  editId=null;
+  document.getElementById("modalTitle").textContent="Add Shift";
+  document.getElementById("fDate").value="";
+  document.getElementById("fStart").value="08:00";
+  document.getElementById("fEnd").value="17:00";
+  document.getElementById("fLoc").value="Lasalle";
+  document.getElementById("fPA").value="";
+  document.getElementById("fPAStart").value="";
+  document.getElementById("fPAEnd").value="";
+  togglePATimes();
+  document.getElementById("modalOverlay").style.display="flex";
+}
+
+function openEdit(id){
+  const s=shifts.find(x=>x.id===id); if(!s) return;
+  editId=id;
+  document.getElementById("modalTitle").textContent="Edit Shift";
+  document.getElementById("fDate").value=s.date;
+  document.getElementById("fStart").value=s.start;
+  document.getElementById("fEnd").value=s.end;
+  document.getElementById("fLoc").value=s.location;
+  document.getElementById("fPA").value=s.pa||"";
+  document.getElementById("fPAStart").value=s.paStart||"";
+  document.getElementById("fPAEnd").value=s.paEnd||"";
+  togglePATimes();
+  document.getElementById("modalOverlay").style.display="flex";
+}
+
+function closeModal(){ document.getElementById("modalOverlay").style.display="none"; editId=null; }
+
+function togglePATimes(){
+  document.getElementById("paTimes").style.display=
+    document.getElementById("fPA").value ? "block":"none";
+}
+
+function saveShift(){
+  const s={
+    id:   editId||uid(),
+    date: document.getElementById("fDate").value,
+    location: document.getElementById("fLoc").value,
+    start: document.getElementById("fStart").value,
+    end:   document.getElementById("fEnd").value,
+    pa:    document.getElementById("fPA").value,
+    paStart: document.getElementById("fPAStart").value,
+    paEnd:   document.getElementById("fPAEnd").value,
+  };
+  if(!s.date||!s.start||!s.end){ alert("Please fill in the date and times."); return; }
+  if(editId){ shifts=shifts.map(x=>x.id===editId?s:x); }
+  else { shifts.push(s); }
+  save(); closeModal(); render();
+}
+
+function deleteShift(id){
+  if(!confirm("Delete this shift?")) return;
+  shifts=shifts.filter(s=>s.id!==id);
+  save(); closeSheet(); render();
+}
+
+// ── Tabs & Render ─────────────────────────────────────────────────────────────
+function switchTab(t){
+  view=t;
+  document.getElementById("tabCal").className ="tab-btn"+(t==="calendar"?" active":"");
+  document.getElementById("tabList").className="tab-btn"+(t==="list"?" active":"");
+  render();
+}
+
+function render(){
+  renderStats();
+  if(view==="calendar") renderCalendar();
+  else renderList();
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+load();
+render();
+</script>
+</body>
+</html>
